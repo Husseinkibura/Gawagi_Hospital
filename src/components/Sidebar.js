@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Drawer,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider,
-  IconButton,
   Box,
   Typography,
   Avatar,
+  IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -21,31 +21,45 @@ import {
   Science as ScienceIcon,
   LocalPharmacy as PharmacyIcon,
   PointOfSale as CashierIcon,
+  CalendarToday as CalendarIcon,
+  Folder as FolderIcon,
+  Chat as ChatIcon,
   ChevronLeft as ChevronLeftIcon,
+  QrCodeScanner as QrCodeScannerIcon,
+  Assessment as ReportIcon,
+  Inventory as PhysicalCountIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width: 600px)"); // Check for mobile screens
 
   // Retrieve the role and username from localStorage (set during login)
   const role = localStorage.getItem("role") || "admin"; // Default to "admin"
   const username = localStorage.getItem("username") || "Admin"; // Default to "Admin"
-  const storedImage = localStorage.getItem("profileImage");
+
+  // Generate a unique key for the profile image based on the username
+  const profileImageKey = `profileImage_${username}`;
 
   // Profile Image State
-  const [profileImage, setProfileImage] = useState(storedImage || "");
+  const [profileImage, setProfileImage] = useState(
+    localStorage.getItem(profileImageKey) || ""
+  );
 
   // Handle Image Upload
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        localStorage.setItem("profileImage", reader.result);
-        setProfileImage(reader.result);
+        const imageUrl = reader.result;
+        localStorage.setItem(profileImageKey, imageUrl); // Save with unique key
+        setProfileImage(imageUrl);
       };
       reader.readAsDataURL(file);
+    } else {
+      alert("Please upload a valid image file.");
     }
   };
 
@@ -59,38 +73,61 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       { text: "Pharmacists", icon: <PharmacyIcon />, path: "/admin/pharmacists" },
       { text: "Cashier", icon: <CashierIcon />, path: "/admin/cashiers" },
       { text: "Lab Technician", icon: <ScienceIcon />, path: "/admin/technician" },
-      { text: "Manage Users", icon: <PeopleIcon />, path: "/admin/manage-users" },
-      { text: "System Settings", icon: <SettingsIcon />, path: "/admin/settings" },
-      { text: "Generate Reports", icon: <AssignmentIcon />, path: "/admin/reports" },
+      { text: "RCH", icon: <CashierIcon />, path: "/admin/rchclinics" },
+      { text: "Drugs", icon: <PeopleIcon />, path: "/admin/drug" },
+      { text: "Lab Tests", icon: <SettingsIcon />, path: "/admin/tests" },
+      { text: "Emergency Cases", icon: <ReportIcon />, path: "/admin/emergency" },
+      { text: "Patient Feedback", icon: <ReportIcon />, path: "/admin/all-feedback" },
+      { text: "Staff Reports", icon: <AssignmentIcon />, path: "/admin/reports" },
     ],
     reception: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/reception" },
-      { text: "Patient Registration", icon: <HospitalIcon />, path: "/reception/register-patient" },
+      { text: "Patient", icon: <HospitalIcon />, path: "/reception/patient" },
       { text: "Appointments", icon: <AssignmentIcon />, path: "/reception/appointments" },
     ],
     doctor: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/doctor" },
-      { text: "Patients", icon: <HospitalIcon />, path: "/doctor/patients" },
-      { text: "Prescriptions", icon: <ReceiptIcon />, path: "/doctor/prescriptions" },
+      { text: "Patients", icon: <PeopleIcon />, path: "/doctor/patients" },
+      { text: "Lab Tests", icon: <ScienceIcon />, path: "/doctor/lab" },
+      { text: "Billing & Payments", icon: <CashierIcon />, path: "/doctor/bills" },
+      // { text: "Prescriptions", icon: <PharmacyIcon />, path: "/doctor/prescriptions" },
+      { text: "Appointments", icon: <CalendarIcon />, path: "/doctor/appointments" },
+      { text: "Medical Records", icon: <FolderIcon />, path: "/doctor/records" },
+      { text: "Emergency Cases", icon: <ReportIcon />, path: "/doctor/emergency" },
+      { text: "Reports", icon: <ReportIcon />, path: "/doctor/reports" },
     ],
-    lab: [
+    labtech: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/lab" },
       { text: "Lab Tests", icon: <ScienceIcon />, path: "/lab/tests" },
+      { text: "Lab Equipment", icon: <ScienceIcon />, path: "/lab/equipment" },
     ],
-    pharmacy: [
+    pharmacist: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/pharmacy" },
       { text: "Prescriptions", icon: <ReceiptIcon />, path: "/pharmacy/prescriptions" },
-      { text: "Inventory", icon: <PharmacyIcon />, path: "/pharmacy/inventory" },
+      { text: "Medicine", icon: <PharmacyIcon />, path: "/pharmacy/medicine" },
+      { text: "Barcode", icon: <QrCodeScannerIcon />, path: "/pharmacy/barcode" },
+      { text: "Physical Count", icon: <PhysicalCountIcon />, path: "/pharmacy/physical-count" },
     ],
     cashier: [
       { text: "Dashboard", icon: <DashboardIcon />, path: "/cashier" },
-      { text: "Billing", icon: <ReceiptIcon />, path: "/cashier/billing" },
+      { text: "Bills", icon: <ReceiptIcon />, path: "/cashier/payment-details" },
+      // { text: "Billing", icon: <ReceiptIcon />, path: "/cashier/billing" },
+    ],
+    patient: [
+      { text: "Dashboard", icon: <DashboardIcon />, path: "/patient" },
+      { text: "Appointment", icon: <CalendarIcon />, path: "/patient/appointment" },
+      { text: "Medical Record", icon: <ReceiptIcon />, path: "/patient/medical-record" },
+      { text: "Feedback", icon: <ChatIcon />, path: "/patient/feedback" },
+    ],
+    rchclinic: [
+      { text: "Dashboard", icon: <DashboardIcon />, path: "/rchclinic" },
+      { text: "Reports", icon: <CalendarIcon />, path: "/rchclinic/reports" },
     ],
   };
 
   return (
     <Drawer
-      variant="persistent"
+      variant={isMobile ? "temporary" : "persistent"} // Use temporary drawer for mobile
       open={isOpen}
       onClose={toggleSidebar}
       sx={{
@@ -109,7 +146,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           scrollbarWidth: "thin",
           scrollbarColor: "#aaa transparent",
           "&::-webkit-scrollbar": {
-            width: "3px", // Reduced width for smoother scrolling
+            width: "3px",
           },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "#aaa",
@@ -121,9 +158,30 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         },
       }}
     >
+      {/* Title Section */}
+      <Box
+        sx={{
+          p: 2,
+          textAlign: "center",
+          borderBottom: "1px solid #e0e0e0",
+          cursor: "pointer",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "1.2rem",
+            color: "#1976d2",
+          }}
+        >
+          Gawagi Dispensary
+        </Typography>
+      </Box>
+
       {/* Profile Section */}
       <Box sx={{ p: 3, textAlign: "center", borderBottom: "1px solid #e0e0e0" }}>
-        <label htmlFor="profile-upload">
+        <label htmlFor="profile-upload" style={{ cursor: "pointer" }}>
           <input
             type="file"
             id="profile-upload"
@@ -142,16 +200,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <>
             <Typography variant="h6" sx={{ fontWeight: "medium", fontSize: "1.1rem" }}>
-              {username || "User"}
+              {username}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.9rem" }}>
-              {role || "User Role"}
+              {role}
             </Typography>
           </>
         )}
       </Box>
 
-      {/* Sidebar List with Cursor Pointer */}
+      {/* Sidebar List */}
       <List>
         {sidebarItems[role.toLowerCase()]?.map((item, index) => (
           <ListItem

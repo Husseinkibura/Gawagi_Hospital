@@ -1,8 +1,9 @@
-// src/components/Footer.js
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 const Footer = () => {
+  const isMobile = useMediaQuery("(max-width: 600px)"); // Check for mobile screens
+
   return (
     <Box
       component="footer"
@@ -15,13 +16,13 @@ const Footer = () => {
             : theme.palette.grey[800],
         position: "fixed", // Fix the footer at the bottom
         bottom: 0,
-        left: { sm: "240px" }, // Align footer with the main content area (when sidebar is open)
+        left: isMobile ? 0 : "240px", // Align footer with the main content area (when sidebar is open)
         right: 0,
         zIndex: (theme) => theme.zIndex.drawer + 1, // Ensure footer is above other content
         transition: "left 0.3s", // Smooth transition when sidebar is toggled
       }}
     >
-      <Typography variant="body2" align="center" sx={{ fontSize: "0.875rem", fontWeight: "medium" }}> {/* Smaller font size and medium weight */}
+      <Typography variant="body2" align="center" sx={{ fontSize: "0.875rem", fontWeight: "medium" }}>
         © {new Date().getFullYear()} Hospital Management System. All rights reserved.
       </Typography>
     </Box>
