@@ -174,38 +174,32 @@ const DiseaseManagement = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md mt-5">
+    <div className="p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md mt-5">
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       {/* Header with Search and Add Disease Button */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold">Disease Management</h1>
-        <div className="flex items-center space-x-4">
-          {/* Search Bar */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-              <Search className="w-5 h-5 text-gray-400" />
-            </span>
+      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <h1 className="text-xl font-bold whitespace-nowrap">Disease Management</h1>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative w-full sm:w-48">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-8 pr-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                <Search className="w-4 h-4 text-gray-400" />
+              </span>
+            </div>
+            <button
+              onClick={toggleModal}
+              className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm whitespace-nowrap"
+            >
+              +Add Disease
+            </button>
           </div>
-
-          {/* Add Disease Button */}
-          <button
-            onClick={() => {
-              setSelectedDisease(null);
-              toggleModal();
-            }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            +Add Disease
-          </button>
         </div>
-      </div>
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -213,27 +207,27 @@ const DiseaseManagement = () => {
           <table className="min-w-full">
             <thead>
               <tr className="border-b">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disease Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drug Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drug Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disease Name</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drug Name</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drug Price</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {currentDiseases.map((disease, index) => (
                 <tr key={disease.id} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.disease_name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.test_type}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.price}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.drug_name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.drug_price}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.quantity}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.disease_name}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.test_type}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.price}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.drug_name}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.drug_price}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{disease.quantity}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
                     {/* View Button */}
                     <button
                       onClick={() => handleView(disease)}
@@ -263,8 +257,8 @@ const DiseaseManagement = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center px-6 py-4 border-t border-gray-200">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-4 border-t border-gray-200">
+          <div className="flex items-center space-x-2 mb-4 sm:mb-0">
             <span className="text-sm text-gray-500">Results per page:</span>
             <select
               value={diseasesPerPage}
@@ -422,22 +416,22 @@ const DiseaseManagement = () => {
                   />
                 </div>
 
-    {/* Submit Button */}
-    <div className="col-span-1 lg:col-span-2 mt-4 sm:mt-6 flex gap-0.5">
-        <button
-            onClick={toggleModal}
-            className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-        >
-            Cancel
-        </button>
-        <button
-            type="submit"
-            className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
-            {selectedDisease ? "Update" : "Submit"}
-        </button>
-    </div>
-</form>
+                {/* Submit Button */}
+                <div className="col-span-1 lg:col-span-2 mt-4 sm:mt-6 flex gap-2">
+                  <button
+                    onClick={toggleModal}
+                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  >
+                    {selectedDisease ? "Update" : "Submit"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -497,16 +491,6 @@ const DiseaseManagement = () => {
 };
 
 export default DiseaseManagement;
-
-
-
-
-
-
-
-
-
-
 
 
 // import React, { useState, useEffect } from "react";

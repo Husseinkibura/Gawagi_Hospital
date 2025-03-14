@@ -93,17 +93,17 @@ const AllFeedback = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 mt-5">
-      <div className="bg-white p-6 rounded-2xl shadow-2xl">
-        <h1 className="text-2xl sm:text-xl font-semibold text-gray-800 mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl mt-5">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">
           Patient Feedback
         </h1>
 
         {/* Filter Buttons */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 sm:mb-6">
           <button
             onClick={() => setFilter('unread')}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-3 py-1 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base ${
               filter === 'unread'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-200 text-gray-700'
@@ -113,7 +113,7 @@ const AllFeedback = () => {
           </button>
           <button
             onClick={() => setFilter('read')}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-3 py-1 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base ${
               filter === 'read'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-200 text-gray-700'
@@ -123,7 +123,7 @@ const AllFeedback = () => {
           </button>
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-3 py-1 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base ${
               filter === 'all'
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-200 text-gray-700'
@@ -149,7 +149,7 @@ const AllFeedback = () => {
                 <h2 className="text-lg font-medium text-gray-700 mb-2">
                   Patient Details
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
                   <div>
                     <p className="text-sm text-gray-600">
                       <span className="font-medium">Patient ID:</span>{' '}
@@ -173,7 +173,7 @@ const AllFeedback = () => {
 
               {/* Feedback Details */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                   <span
                     className={`text-sm font-semibold ${
                       feedback.satisfaction === 'Excellent'
@@ -190,7 +190,7 @@ const AllFeedback = () => {
                   {feedback.status === 'unread' && (
                     <button
                       onClick={() => markAsRead(feedback.id)}
-                      className="px-3 py-1 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700"
+                      className="px-2 py-1 sm:px-3 sm:py-1 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700"
                     >
                       Mark as Read
                     </button>
@@ -198,7 +198,7 @@ const AllFeedback = () => {
                 </div>
                 <button
                   onClick={() => deleteFeedback(feedback.id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
+                  className="px-2 py-1 sm:px-3 sm:py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 mt-2 sm:mt-0"
                 >
                   Delete
                 </button>

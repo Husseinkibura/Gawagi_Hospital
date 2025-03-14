@@ -228,72 +228,71 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen mt-5">
       {/* Dashboard Header */}
-      <div className="flex justify-between items-center mt-5">
-        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
-        <a href="/" className="text-blue-500">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+        <a href="/" className="text-blue-500 text-sm sm:text-base">
           Home/Dashboard
         </a>
       </div>
-      <br />
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-  {stats.map((stat, index) => (
-    <div
-      key={index}
-      className={`p-6 rounded-lg shadow-md text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
-        stat.title === "Total Patients"
-          ? "bg-gradient-to-r from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300"
-          : stat.title === "Doctors"
-          ? "bg-gradient-to-r from-green-100 to-green-200 hover:from-green-200 hover:to-green-300"
-          : stat.title === "Receptionists"
-          ? "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300"
-          : stat.title === "Technicians"
-          ? "bg-gradient-to-r from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300"
-          : stat.title === "Pharmacists"
-          ? "bg-gradient-to-r from-pink-100 to-pink-200 hover:from-pink-200 hover:to-pink-300"
-          : stat.title === "Cashiers"
-          ? "bg-gradient-to-r from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300"
-          : stat.title === "Drug Stocked"
-          ? "bg-gradient-to-r from-teal-100 to-teal-200 hover:from-teal-200 hover:to-teal-300"
-          : "bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300"
-      }`}
-    >
-      <div className="flex justify-center">{stat.icon}</div>
-      <h3 className="mt-2 text-lg font-medium text-gray-700">{stat.title}</h3>
-      <p className="text-2xl font-bold text-gray-900">
-        {stat.title === "Drug Stocked"
-          ? totalStockedDrugs
-          : stat.title === "Drug Expired"
-          ? expiredDrugs
-          : stat.value}
-      </p>
-    </div>
-  ))}
-</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className={`p-4 sm:p-6 rounded-lg shadow-md text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+              stat.title === "Total Patients"
+                ? "bg-gradient-to-r from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300"
+                : stat.title === "Doctors"
+                ? "bg-gradient-to-r from-green-100 to-green-200 hover:from-green-200 hover:to-green-300"
+                : stat.title === "Receptionists"
+                ? "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300"
+                : stat.title === "Technicians"
+                ? "bg-gradient-to-r from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300"
+                : stat.title === "Pharmacists"
+                ? "bg-gradient-to-r from-pink-100 to-pink-200 hover:from-pink-200 hover:to-pink-300"
+                : stat.title === "Cashiers"
+                ? "bg-gradient-to-r from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300"
+                : stat.title === "Drug Stocked"
+                ? "bg-gradient-to-r from-teal-100 to-teal-200 hover:from-teal-200 hover:to-teal-300"
+                : "bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300"
+            }`}
+          >
+            <div className="flex justify-center">{stat.icon}</div>
+            <h3 className="mt-2 text-sm sm:text-lg font-medium text-gray-700">{stat.title}</h3>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">
+              {stat.title === "Drug Stocked"
+                ? totalStockedDrugs
+                : stat.title === "Drug Expired"
+                ? expiredDrugs
+                : stat.value}
+            </p>
+          </div>
+        ))}
+      </div>
 
       {/* Drug Usage Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Bar Chart - Drug Usage */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Drug Usage Per Month</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Drug Usage Per Month</h2>
           <BarChart
             xAxis={[{ data: drugUsageData.map((d) => d.name), scaleType: "band" }]}
             series={[{ data: drugUsageData.map((d) => d.usage), label: "Drug Usage" }]}
-            width={500}
+            width={window.innerWidth < 768 ? 300 : 500}
             height={300}
           />
         </div>
 
         {/* Line Chart - Drug Usage Trend */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Drug Usage Trend</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Drug Usage Trend</h2>
           <LineChart
             xAxis={[{ data: drugUsageData.map((d) => d.name), scaleType: "band" }]}
             series={[{ data: drugUsageData.map((d) => d.usage), label: "Drug Usage" }]}
-            width={500}
+            width={window.innerWidth < 768 ? 300 : 500}
             height={300}
           />
         </div>
@@ -302,31 +301,31 @@ const AdminDashboard = () => {
       {/* Payment Trends Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Weekly Payments */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Weekly Payment Trends</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Weekly Payment Trends</h2>
           <BarChart
             xAxis={[{ data: getPaymentsPerWeek().map((d) => d.day), scaleType: "band" }]}
             series={[{ data: getPaymentsPerWeek().map((d) => d.amount), label: "Payments (Tsh)" }]}
-            width={500}
+            width={window.innerWidth < 768 ? 300 : 500}
             height={300}
           />
         </div>
 
         {/* Monthly Payments */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Monthly Payment Trends</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Monthly Payment Trends</h2>
           <LineChart
             xAxis={[{ data: getPaymentsPerMonth().map((d) => d.month), scaleType: "band" }]}
             series={[{ data: getPaymentsPerMonth().map((d) => d.amount), label: "Payments (Tsh)" }]}
-            width={500}
+            width={window.innerWidth < 768 ? 300 : 500}
             height={300}
           />
         </div>
       </div>
 
       {/* Payment Status Distribution */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Payment Status Distribution</h2>
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Payment Status Distribution</h2>
         <PieChart
           series={[
             {
@@ -337,14 +336,14 @@ const AdminDashboard = () => {
               cornerRadius: 5,
             },
           ]}
-          width={400}
+          width={window.innerWidth < 768 ? 300 : 400}
           height={300}
         />
       </div>
 
       {/* Recent Payment Approvals */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center">
           <NotificationsIcon className="text-blue-500 mr-2" />
           Recent Payment Approvals
         </h2>

@@ -233,197 +233,170 @@ const Cashiers = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-100 rounded-lg shadow-md mt-5">
-          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-          {/* Header with Search, Filter, and Add User Button */}
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-xl font-bold">Cashier List</h1>
-            <div className="flex items-center space-x-4">
-              {/* Search Bar */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <Search className="w-5 h-5 text-gray-400" />
-                </span>
-              </div>
-    
-              {/* Filter Dropdown */}
-              <select
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="All">All</option>
-                <option value="Approved">Approved</option>
-                <option value="Pending">Pending</option>
-                <option value="Banned">Banned</option>
-              </select>
-    
-              {/* Add User Button */}
-              <button
-                onClick={toggleModal}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                +Add Cashier
-              </button>
+      <div className="p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md mt-5">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      {/* Header with Search and Add Disease Button */}
+<div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <h1 className="text-xl font-bold whitespace-nowrap">Cashier List</h1>      
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative w-full sm:w-48">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-8 pr-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                <Search className="w-4 h-4 text-gray-400" />
+              </span>
             </div>
+            <button
+              onClick={toggleModal}
+              className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm whitespace-nowrap"
+            >
+              +Add Cashier
+            </button>
           </div>
-    
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                            <div className="overflow-x-auto">
-                              <table className="min-w-full">
-                                <thead>
-                                  <tr className="border-b">
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {currentUsers.map((cashier, index) => (
-                                    <tr key={cashier.id} className="hover:bg-gray-50 transition-colors duration-200">
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{indexOfFirstUser + index + 1}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cashier.fullname}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.username}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.email}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.address}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.Salary}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {cashier.Contract && (
-                              <a
-                                href={`http://localhost:5000/uploads/${cashier.Contract}`} // Use the correct URL
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-500 hover:text-blue-700"
-                              >
-                                View Contract
-                              </a>
-                            )}
-                          </td>
-                                      {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.DateOfBirth}</td> */}
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.age}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.role}</td>
-                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
-                                        {/* View Button with Tooltip */}
-                                        {/* <div className="relative group">
-                                          <button
-                                            onClick={() => handleView(cashier.id)}
-                                            className="text-blue-500 hover:text-blue-700 transition-colors"
-                                          >
-                                            <FaEye className="w-4 h-4 sm:w-5 sm:h-5" />
-                                          </button>
-                                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                            View
-                                          </span>
-                                        </div> */}
-                                        {/* Edit Button with Tooltip */}
-                                        <div className="relative group">
-                                          <button
-                                            onClick={() => handleEdit(cashier.id)}
-                                            className="text-green-500 hover:text-green-700 transition-colors"
-                                          >
-                                            <FaEdit className="w-4 h-4 sm:w-5 sm:h-5" />
-                                          </button>
-                                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                            Edit
-                                          </span>
-                                        </div>
-                                        {/* Delete Button with Tooltip */}
-                                        <div className="relative group">
-                                          <button
-                                            onClick={() => handleDelete(cashier.id)}
-                                            className="text-red-500 hover:text-red-700 transition-colors"
-                                          >
-                                            <FaTrash className="w-4 h-4 sm:w-5 sm:h-5" />
-                                          </button>
-                                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                            Delete
-                                          </span>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                            <div className="flex justify-between items-center px-6 py-4 border-t border-gray-200">
-                              <div className="flex items-center space-x-2">
-                                <span className="text-sm text-gray-500">Results per page:</span>
-                                <select
-                                  value={usersPerPage}
-                                  onChange={handleUsersPerPageChange}
-                                  className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                  <option value={1}>1</option>
-                                  <option value={2}>2</option>
-                                  <option value={5}>5</option>
-                                  <option value={10}>10</option>
-                                </select>
-                              </div>
-                              <div className="flex space-x-2">
-                                <button
-                                  onClick={() => handlePageChange(1)}
-                                  disabled={currentPage === 1}
-                                  className={`px-3 py-1 rounded-lg ${
-                                    currentPage === 1
-                                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                                      : "bg-white text-gray-700 hover:bg-gray-100"
-                                  }`}
-                                >
-                                  1
-                                </button>
-                                <button
-                                  onClick={() => handlePageChange(currentPage - 1)}
-                                  disabled={currentPage === 1}
-                                  className={`px-3 py-1 rounded-lg ${
-                                    currentPage === 1
-                                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                                      : "bg-white text-gray-700 hover:bg-gray-100"
-                                  }`}
-                                >
-                                  &lt;
-                                </button>
-                                <span className="px-3 py-1 bg-white text-gray-700 rounded-lg">
-                                  {currentPage}
-                                </span>
-                                <button
-                                  onClick={() => handlePageChange(currentPage + 1)}
-                                  disabled={currentPage === totalPages}
-                                  className={`px-3 py-1 rounded-lg ${
-                                    currentPage === totalPages
-                                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                                      : "bg-white text-gray-700 hover:bg-gray-100"
-                                  }`}
-                                >
-                                  &gt;
-                                </button>
-                                <button
-                                  onClick={() => handlePageChange(totalPages)}
-                                  disabled={currentPage === totalPages}
-                                  className={`px-3 py-1 rounded-lg ${
-                                    currentPage === totalPages
-                                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                                      : "bg-white text-gray-700 hover:bg-gray-100"
-                                  }`}
-                                >
-                                  {totalPages}
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+        </div>
+  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="overflow-x-auto">
+      <table className="min-w-full">
+        <thead>
+          <tr className="border-b">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+            <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentUsers.map((cashier, index) => (
+            <tr key={cashier.id} className="hover:bg-gray-50 transition-colors duration-200">
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{indexOfFirstUser + index + 1}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cashier.fullname}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.username}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.email}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.address}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.Salary}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {cashier.Contract && (
+                  <a
+                    href={`http://localhost:5000/uploads/${cashier.Contract}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    View Contract
+                  </a>
+                )}
+              </td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.age}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cashier.role}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
+                {/* Edit Button */}
+                <div className="relative group">
+                  <button
+                    onClick={() => handleEdit(cashier.id)}
+                    className="text-green-500 hover:text-green-700 transition-colors"
+                  >
+                    <FaEdit className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Edit
+                  </span>
+                </div>
+                {/* Delete Button */}
+                <div className="relative group">
+                  <button
+                    onClick={() => handleDelete(cashier.id)}
+                    className="text-red-500 hover:text-red-700 transition-colors"
+                  >
+                    <FaTrash className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    Delete
+                  </span>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {/* Pagination */}
+    <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-4 border-t border-gray-200">
+      <div className="flex items-center space-x-2 mb-4 sm:mb-0">
+        <span className="text-sm text-gray-500">Results per page:</span>
+        <select
+          value={usersPerPage}
+          onChange={handleUsersPerPageChange}
+          className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+        </select>
+      </div>
+      <div className="flex space-x-2">
+        {/* Pagination buttons */}
+        <button
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+          className={`px-3 py-1 rounded-lg ${
+            currentPage === 1
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          1
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`px-3 py-1 rounded-lg ${
+            currentPage === 1
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          &lt;
+        </button>
+        <span className="px-3 py-1 bg-white text-gray-700 rounded-lg">
+          {currentPage}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`px-3 py-1 rounded-lg ${
+            currentPage === totalPages
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          &gt;
+        </button>
+        <button
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className={`px-3 py-1 rounded-lg ${
+            currentPage === totalPages
+              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          {totalPages}
+        </button>
+      </div>
+    </div>
+  </div>
                           {showModal && (
                             <div className="fixed inset-0 bg-stone-800 bg-opacity-75 flex justify-center items-center z-[9999] animate-fadeIn">
                               <div className="bg-white rounded-xl w-11/12 lg:w-8/12 h-[80vh] overflow-hidden shadow-lg transform transition-all duration-300 flex flex-col">

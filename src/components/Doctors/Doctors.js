@@ -15,15 +15,15 @@ const Doctors = () => {
   const [formData, setFormData] = useState({
     fullname: "",
     username: "",
-    password: "", // Default password
+    password: "",
     email: "",
     profileImage: "",
     address: "",
     DateOfBirth: "",
     role: "Doctor",
-    age: "", // Add age field
-    Contract: null, // Add Contract field
-    Salary: "", // Add Salary field
+    age: "",
+    Contract: null,
+    Salary: "",
   });
 
   const handleFileChange = (e) => {
@@ -76,9 +76,9 @@ const Doctors = () => {
         address: "",
         DateOfBirth: "",
         role: "Doctor",
-        age: "", // Reset age field
-        Contract: null, // Reset Contract field
-        Salary: "", // Reset Salary field
+        age: "",
+        Contract: null,
+        Salary: "",
       });
     }
   };
@@ -91,7 +91,7 @@ const Doctors = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-  
+
       if (response.ok) {
         toast.success("Doctor deleted successfully!");
         fetchDoctors(); // Refresh the list of doctors
@@ -106,19 +106,19 @@ const Doctors = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "DateOfBirth") {
       // Calculate age from DateOfBirth
       const birthDate = new Date(value);
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
       // Adjust age if the birthday hasn't occurred yet this year
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-  
+
       setFormData({ ...formData, DateOfBirth: value, age: age.toString() });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -127,7 +127,7 @@ const Doctors = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formDataToSend = new FormData();
     formDataToSend.append("fullname", formData.fullname);
     formDataToSend.append("username", formData.username);
@@ -142,11 +142,11 @@ const Doctors = () => {
     if (formData.Contract) {
       formDataToSend.append("Contract", formData.Contract);
     }
-  
+
     const url = formData.id
       ? `http://localhost:5000/api/auth/update-user/${formData.id}`
       : "http://localhost:5000/api/auth/add-user";
-  
+
     try {
       const response = await fetch(url, {
         method: formData.id ? "PUT" : "POST",
@@ -155,7 +155,7 @@ const Doctors = () => {
         },
         body: formDataToSend,
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
@@ -169,7 +169,6 @@ const Doctors = () => {
       toast.error("An error occurred while updating/adding the doctor.");
     }
   };
-
 
   const filteredDoctors = doctors.filter((doctor) =>
     doctor.fullname.toLowerCase().includes(searchTerm.toLowerCase())
@@ -226,90 +225,76 @@ const Doctors = () => {
     });
     toggleModal();
   };
-  
-  
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md mt-5">
+    <div className="p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md mt-5">
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold">Doctor List</h1>
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-              <Search className="w-5 h-5 text-gray-400" />
-            </span>
+      {/* Header with Search and Add Disease Button */}
+      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <h1 className="text-xl font-bold whitespace-nowrap">Doctor List</h1>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative w-full sm:w-48">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-8 pr-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                <Search className="w-4 h-4 text-gray-400" />
+              </span>
+            </div>
+            <button
+              onClick={toggleModal}
+              className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm whitespace-nowrap"
+            >
+              +Add Doctor
+            </button>
           </div>
-          <button
-            onClick={toggleModal}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            +Add Doctor
-          </button>
         </div>
-      </div>
+
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
               <tr className="border-b">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No.</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {currentUsers.map((doctor, index) => (
                 <tr key={doctor.id} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{indexOfFirstUser + index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{doctor.fullname}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.address}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.Salary}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {doctor.Contract && (
-          <a
-            href={`http://localhost:5000/uploads/${doctor.Contract}`} // Use the correct URL
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-700"
-          >
-            View Contract
-          </a>
-        )}
-      </td>
-                  {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.DateOfBirth}</td> */}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.age}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.role}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
-                    {/* View Button with Tooltip */}
-                    {/* <div className="relative group">
-                      <button
-                        onClick={() => handleView(doctor.id)}
-                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{indexOfFirstUser + index + 1}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{doctor.fullname}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.username}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.email}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.address}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.Salary}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {doctor.Contract && (
+                      <a
+                        href={`http://localhost:5000/uploads/${doctor.Contract}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:text-blue-700"
                       >
-                        <FaEye className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
-                      <span className="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        View
-                      </span>
-                    </div> */}
-                    {/* Edit Button with Tooltip */}
+                        View Contract
+                      </a>
+                    )}
+                  </td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.age}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doctor.role}</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-2">
                     <div className="relative group">
                       <button
                         onClick={() => handleEdit(doctor.id)}
@@ -321,7 +306,6 @@ const Doctors = () => {
                         Edit
                       </span>
                     </div>
-                    {/* Delete Button with Tooltip */}
                     <div className="relative group">
                       <button
                         onClick={() => handleDelete(doctor.id)}
@@ -339,8 +323,8 @@ const Doctors = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-between items-center px-6 py-4 border-t border-gray-200">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-4 border-t border-gray-200">
+          <div className="flex items-center space-x-2 mb-4 sm:mb-0">
             <span className="text-sm text-gray-500">Results per page:</span>
             <select
               value={usersPerPage}
@@ -471,25 +455,25 @@ const Doctors = () => {
                   />
                 </div>
                 <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-  <input
-    type="date"
-    name="DateOfBirth"
-    value={formData.DateOfBirth}
-    onChange={handleInputChange}
-    className="w-full h-10 sm:h-12 px-3 sm:px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-  <input
-    type="number"
-    name="age"
-    value={formData.age}
-    readOnly // Make the age field read-only
-    className="w-full h-10 sm:h-12 px-3 sm:px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base bg-gray-100"
-  />
-</div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                  <input
+                    type="date"
+                    name="DateOfBirth"
+                    value={formData.DateOfBirth}
+                    onChange={handleInputChange}
+                    className="w-full h-10 sm:h-12 px-3 sm:px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    readOnly
+                    className="w-full h-10 sm:h-12 px-3 sm:px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base bg-gray-100"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Salary</label>
                   <input
