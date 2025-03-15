@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Website = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // State for mobile menu
   const navigate = useNavigate();
 
   // Define the roles
@@ -16,6 +17,7 @@ const Website = () => {
   // Scroll to a specific section
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false); // Close the mobile menu after clicking a link
   };
 
   // Handle role click and redirect to login page
@@ -29,7 +31,16 @@ const Website = () => {
       <nav className="bg-white text-black py-4 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-2xl font-bold text-blue-600">GAWAGI PENTECOSTAL DISPENSARY</h1>
-          <ul className="flex space-x-6">
+          {/* Hamburger Menu for Mobile */}
+          <div className="md:hidden">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="text-black focus:outline-none">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+            </button>
+          </div>
+          {/* Desktop Menu */}
+          <ul className={`md:flex space-x-6 ${menuOpen ? 'block' : 'hidden'} md:block`}>
             <li
               className="cursor-pointer hover:text-blue-600 transition-colors duration-300 text-lg font-semibold"
               onClick={() => scrollToSection(aboutRef)}
@@ -49,25 +60,25 @@ const Website = () => {
               Location
             </li>
             <li
-  className="relative"
-  onMouseEnter={() => setDropdownOpen(true)}
-  onMouseLeave={() => setDropdownOpen(false)}
->
-  <span className="cursor-pointer hover:text-blue-600 transition-colors duration-300 text-lg font-semibold">Login</span>
-  {dropdownOpen && (
-    <ul className="absolute bg-white text-black shadow-lg mt-2 rounded-md z-10 w-64 transition-all duration-300 transform origin-top">
-      {roles.map((role) => (
-        <li
-          key={role}
-          className="px-4 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300 text-md font-medium"
-          onClick={() => handleRoleClick(role)} // Redirect to login page
-        >
-          {role}
-        </li>
-      ))}
-    </ul>
-  )}
-</li>
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
+              <span className="cursor-pointer hover:text-blue-600 transition-colors duration-300 text-lg font-semibold">Login</span>
+              {dropdownOpen && (
+                <ul className="absolute bg-white text-black shadow-lg mt-2 rounded-md z-10 w-64 transition-all duration-300 transform origin-top">
+                  {roles.map((role) => (
+                    <li
+                      key={role}
+                      className="px-4 py-2 hover:bg-gray-200 cursor-pointer transition-colors duration-300 text-md font-medium"
+                      onClick={() => handleRoleClick(role)} // Redirect to login page
+                    >
+                      {role}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
           </ul>
         </div>
       </nav>
@@ -75,10 +86,10 @@ const Website = () => {
       {/* Header Section */}
       <header className="py-24 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
         <div className="container mx-auto text-center px-4">
-          <h1 className="text-5xl font-bold mb-4 animate-bounce">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-bounce">
             Welcome to GAWAGI PENTECOSTAL DISPENSARY
           </h1>
-          <p className="text-xl font-light">Providing Quality Medical Services 24/7</p>
+          <p className="text-lg md:text-xl font-light">Providing Quality Medical Services 24/7</p>
         </div>
       </header>
 
