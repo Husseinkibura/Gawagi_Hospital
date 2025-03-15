@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 
 const Footer = () => {
@@ -23,7 +23,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" align="center" sx={{ fontSize: "0.875rem", fontWeight: "medium" }}>
-        © {new Date().getFullYear()} Hospital Management System. All rights reserved.
+        © {new Date().getFullYear()} Gawagi Dispensary. All rights reserved.
       </Typography>
     </Box>
   );

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types"; // Import prop-types
+import { useState } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
@@ -40,6 +41,11 @@ const Layout = ({ children }) => {
       <Footer />
     </Box>
   );
+};
+
+// Add prop-types validation
+Layout.propTypes = {
+  children: PropTypes.node.isRequired, // Validate that `children` is a valid React node and is required
 };
 
 export default Layout;

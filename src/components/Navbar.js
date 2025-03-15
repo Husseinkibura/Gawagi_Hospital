@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types"; // Import PropTypes
 import {
   AppBar,
   Toolbar,
@@ -285,6 +286,12 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
       </Toolbar>
     </AppBar>
   );
+};
+
+// Add prop-types validation
+Navbar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
+  isSidebarOpen: PropTypes.bool.isRequired,
 };
 
 export default Navbar;

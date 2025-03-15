@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,10 +46,19 @@ import PaymentDetails from "./components/Cashiers/PaymentDetails";
 import PatientFeedback from "./components/Patients/PatientFeedback";
 import AllFeedback from "./components/Feedback/AllFeedback";
 import PatientRecords from "./components/Patients/PatientRecord";
-import Website from "./components/Auth/Website";
+// import Website from "./components/Auth/Website";
 import BarcodeScannerSidebar from "./components/Pharmacists/BarcodeScannerSidebar";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Unauthorized from "./components/Common/Unauthorized";
+
+// Import cloned components
+import ClonedNavbar from "./components/NavFooter/ClonedNavbar";
+import Home from "./components/Home";
+import About from "./components/About";
+import Services from "./components/Services";
+// import Doctors as ClonedDoctors from "./components/Doctors";
+import Blogs from "./components/Blogs";
+import ClonedFooter from "./components/NavFooter/Footer";
 
 const App = () => {
   return (
@@ -69,7 +78,20 @@ const App = () => {
 
       <Routes>
         {/* Public Routes (without Layout) */}
-        <Route path="/" element={<Website />} />
+        <Route
+          path="/"
+          element={
+            <div>
+              <ClonedNavbar />
+              <Home />
+              <About />
+              <Services />
+              {/* <ClonedDoctors /> */}
+              <Blogs />
+              <ClonedFooter />
+            </div>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

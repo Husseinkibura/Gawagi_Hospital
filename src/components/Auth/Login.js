@@ -40,52 +40,120 @@ const Login = () => {
   };
 
   // Handle login for all users
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateForm()) return; // Stop if form validation fails
+  
+  //   setLoading(true);
+  
+  //   try {
+  //     // Attempt to log in as a patient first
+  //     try {
+  //       const patientResponse = await axios.post("http://localhost:5000/api/patients/login", {
+  //         username,
+  //         password,
+  //       });
+  
+  //       const { token: patientToken, role: patientRole, username: patientUsername, profileImage: patientProfileImage } = patientResponse.data;
+  
+  //       if (patientToken && patientRole === "Patient") {
+  //         // Store token, role, username, and profile image in localStorage
+  //         localStorage.setItem("token", patientToken);
+  //         localStorage.setItem("role", patientRole);
+  //         localStorage.setItem("username", patientUsername);
+  //         localStorage.setItem("profileImage", patientProfileImage || "default-profile.png"); // Use a default image if none is provided
+  
+  //         // Show success message
+  //         toast.success("Login successful! Redirecting to your dashboard...", {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           theme: "colored",
+  //         });
+  
+  //         // Redirect to patient dashboard after 3 seconds
+  //         setTimeout(() => {
+  //           navigate("/patient");
+  //         }, 3000);
+  //         return; // Exit the function after handling patient login
+  //       }
+  //     } catch (patientError) {
+  //       // If patient login fails, proceed to general login
+  //       console.log("Patient login failed, attempting general login...");
+  //     }
+  
+  //     // Attempt to log in as other roles (Admin, Doctor, Reception, etc.)
+  //     const response = await axios.post("http://localhost:5000/api/auth/login", {
+  //       username,
+  //       password,
+  //     });
+  
+  //     const { token, user } = response.data;
+  
+  //     if (token && user) {
+  //       localStorage.setItem("token", token);
+  //       localStorage.setItem("role", user.role);
+  //       localStorage.setItem("username", user.username);
+  //       localStorage.setItem("profileImage", user.profileImage || "default-profile.png"); // Use a default image if none is provided
+  
+  //       toast.success(`Welcome back, ${user.username}!`, {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         theme: "colored",
+  //       });
+  
+  //       // Check if the user is a pharmacist and if the report is submitted
+  //       if (user.role === "Pharmacist" && !checkReportSubmission()) {
+  //         toast.info("Please submit the physical count report before logging in.", {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           theme: "colored",
+  //         });
+  //         setTimeout(() => {
+  //           navigate("/physical-count");
+  //         }, 3000);
+  //         return;
+  //       }
+  
+  //       const rolePaths = {
+  //         Admin: "/admin",
+  //         Reception: "/reception",
+  //         Doctor: "/doctor",
+  //         Pharmacist: "/pharmacy",
+  //         LabTech: "/lab",
+  //         Cashier: "/cashier",
+  //         Patient: "/patient",
+  //         RchClinic: "/rchclinic",
+  //       };
+  
+  //       setTimeout(() => {
+  //         navigate(rolePaths[user.role] || "/dashboard");
+  //       }, 3000);
+  //     }
+  //   } catch (err) {
+  //     // Handle login errors
+  //     toast.error(err.response?.data?.message || "Invalid username or password", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       theme: "colored",
+  //     });
+  //   } finally {
+  //     setLoading(false); // Reset loading state
+  //   }
+  // };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Stop if form validation fails
+    if (!validateForm()) return;
   
     setLoading(true);
   
     try {
-      // Attempt to log in as a patient first
-      try {
-        const patientResponse = await axios.post("http://localhost:5000/api/patients/login", {
-          username,
-          password,
-        });
-  
-        const { token: patientToken, role: patientRole, username: patientUsername, profileImage: patientProfileImage } = patientResponse.data;
-  
-        if (patientToken && patientRole === "Patient") {
-          // Store token, role, username, and profile image in localStorage
-          localStorage.setItem("token", patientToken);
-          localStorage.setItem("role", patientRole);
-          localStorage.setItem("username", patientUsername);
-          localStorage.setItem("profileImage", patientProfileImage || "default-profile.png"); // Use a default image if none is provided
-  
-          // Show success message
-          toast.success("Login successful! Redirecting to your dashboard...", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
-  
-          // Redirect to patient dashboard after 3 seconds
-          setTimeout(() => {
-            navigate("/patient");
-          }, 3000);
-          return; // Exit the function after handling patient login
-        }
-      } catch (patientError) {
-        // If patient login fails, proceed to general login
-        console.log("Patient login failed, attempting general login...");
-      }
-  
-      // Attempt to log in as other roles (Admin, Doctor, Reception, etc.)
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         username,
         password,
       });
+  
+      console.log("Login response:", response.data); // Log the response
   
       const { token, user } = response.data;
   
@@ -93,26 +161,13 @@ const Login = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("role", user.role);
         localStorage.setItem("username", user.username);
-        localStorage.setItem("profileImage", user.profileImage || "default-profile.png"); // Use a default image if none is provided
+        localStorage.setItem("profileImage", user.profileImage || "default-profile.png");
   
         toast.success(`Welcome back, ${user.username}!`, {
           position: "top-right",
           autoClose: 3000,
           theme: "colored",
         });
-  
-        // Check if the user is a pharmacist and if the report is submitted
-        if (user.role === "Pharmacist" && !checkReportSubmission()) {
-          toast.info("Please submit the physical count report before logging in.", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
-          setTimeout(() => {
-            navigate("/physical-count");
-          }, 3000);
-          return;
-        }
   
         const rolePaths = {
           Admin: "/admin",
@@ -130,14 +185,14 @@ const Login = () => {
         }, 3000);
       }
     } catch (err) {
-      // Handle login errors
+      console.error("Login error:", err); // Log the error
       toast.error(err.response?.data?.message || "Invalid username or password", {
         position: "top-right",
         autoClose: 3000,
         theme: "colored",
       });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
