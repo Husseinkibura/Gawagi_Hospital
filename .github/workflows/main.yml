@@ -23,6 +23,7 @@ jobs:
           npm install  # Or `yarn install`
 
       - name: Build React app
+        run: |
           npm run build  # Or `yarn build`
 
       - name: Install sshpass
@@ -36,5 +37,8 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_PWD: ${{ secrets.VPS_PWD }}
         run: |
-          sshpass -p "$VPS_PWD" ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "rm -rf /var/www/jafarishomari.shulekwanza.co.tz/*"
-          sshpass -p "$VPS_PWD" scp -o StrictHostKeyChecking=no -r build/* $VPS_USER@$VPS_HOST:/var/www/jafarishomari.shulekwanza.co.tz/
+          # Clear out old build files on VPS
+          sshpass -p "$VPS_PWD" ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "rm -rf /var/www/frontend/build/*"
+          
+          # Deploy new build files to VPS
+          sshpass -p "$VPS_PWD" scp -o StrictHostKeyChecking=no -r build/* $VPS_USER@$VPS_HOST:/var/www/frontend/build/
