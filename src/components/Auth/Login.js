@@ -1,14 +1,12 @@
-// src/components/Auth/Login.js
-
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -16,180 +14,62 @@ const Login = () => {
   // Validate form inputs
   const validateForm = () => {
     const newErrors = {};
-    if (!username.trim()) newErrors.username = "Username is required";
-    if (!password.trim()) newErrors.password = "Password is required";
+    if (!username.trim()) newErrors.username = 'Username is required';
+    if (!password.trim()) newErrors.password = 'Password is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Check if the pharmacist has submitted the report
-  const checkReportSubmission = () => {
-    const lastReportDate = localStorage.getItem("lastReportDate");
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-
-    if (lastReportDate) {
-      const lastMonth = new Date(lastReportDate).getMonth();
-      if (lastMonth !== currentMonth) {
-        localStorage.removeItem("reportSubmitted"); // Reset report status for the new month
-        return false;
-      }
-    }
-
-    return localStorage.getItem("reportSubmitted") === "true";
-  };
-
-  // Handle login for all users
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   if (!validateForm()) return; // Stop if form validation fails
-  
-  //   setLoading(true);
-  
-  //   try {
-  //     // Attempt to log in as a patient first
-  //     try {
-  //       const patientResponse = await axios.post("http://localhost:5000/api/patients/login", {
-  //         username,
-  //         password,
-  //       });
-  
-  //       const { token: patientToken, role: patientRole, username: patientUsername, profileImage: patientProfileImage } = patientResponse.data;
-  
-  //       if (patientToken && patientRole === "Patient") {
-  //         // Store token, role, username, and profile image in localStorage
-  //         localStorage.setItem("token", patientToken);
-  //         localStorage.setItem("role", patientRole);
-  //         localStorage.setItem("username", patientUsername);
-  //         localStorage.setItem("profileImage", patientProfileImage || "default-profile.png"); // Use a default image if none is provided
-  
-  //         // Show success message
-  //         toast.success("Login successful! Redirecting to your dashboard...", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           theme: "colored",
-  //         });
-  
-  //         // Redirect to patient dashboard after 3 seconds
-  //         setTimeout(() => {
-  //           navigate("/patient");
-  //         }, 3000);
-  //         return; // Exit the function after handling patient login
-  //       }
-  //     } catch (patientError) {
-  //       // If patient login fails, proceed to general login
-  //       console.log("Patient login failed, attempting general login...");
-  //     }
-  
-  //     // Attempt to log in as other roles (Admin, Doctor, Reception, etc.)
-  //     const response = await axios.post("http://localhost:5000/api/auth/login", {
-  //       username,
-  //       password,
-  //     });
-  
-  //     const { token, user } = response.data;
-  
-  //     if (token && user) {
-  //       localStorage.setItem("token", token);
-  //       localStorage.setItem("role", user.role);
-  //       localStorage.setItem("username", user.username);
-  //       localStorage.setItem("profileImage", user.profileImage || "default-profile.png"); // Use a default image if none is provided
-  
-  //       toast.success(`Welcome back, ${user.username}!`, {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         theme: "colored",
-  //       });
-  
-  //       // Check if the user is a pharmacist and if the report is submitted
-  //       if (user.role === "Pharmacist" && !checkReportSubmission()) {
-  //         toast.info("Please submit the physical count report before logging in.", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           theme: "colored",
-  //         });
-  //         setTimeout(() => {
-  //           navigate("/physical-count");
-  //         }, 3000);
-  //         return;
-  //       }
-  
-  //       const rolePaths = {
-  //         Admin: "/admin",
-  //         Reception: "/reception",
-  //         Doctor: "/doctor",
-  //         Pharmacist: "/pharmacy",
-  //         LabTech: "/lab",
-  //         Cashier: "/cashier",
-  //         Patient: "/patient",
-  //         RchClinic: "/rchclinic",
-  //       };
-  
-  //       setTimeout(() => {
-  //         navigate(rolePaths[user.role] || "/dashboard");
-  //       }, 3000);
-  //     }
-  //   } catch (err) {
-  //     // Handle login errors
-  //     toast.error(err.response?.data?.message || "Invalid username or password", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       theme: "colored",
-  //     });
-  //   } finally {
-  //     setLoading(false); // Reset loading state
-  //   }
-  // };
-
+  // Handle login
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-  
+
     setLoading(true);
-  
+
     try {
-      const response = await axios.post("https://api.gawagidispensary.com/api/auth/login", {
+      const response = await axios.post('https://api.gawagidispensary.com/api/auth/login', {
         username,
         password,
       });
-  
-      console.log("Login response:", response.data); // Log the response
-  
+
+      console.log('Login response:', response.data); // Log the response
+
       const { token, user } = response.data;
-  
+
       if (token && user) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", user.role);
-        localStorage.setItem("username", user.username);
-        localStorage.setItem("profileImage", user.profileImage || "default-profile.png");
-  
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', user.role);
+        localStorage.setItem('username', user.username);
+        localStorage.setItem('profileImage', user.profileImage || 'default-profile.png');
+
         toast.success(`Welcome back, ${user.username}!`, {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 3000,
-          theme: "colored",
+          theme: 'colored',
         });
-  
+
         const rolePaths = {
-          Admin: "/admin",
-          Reception: "/reception",
-          Doctor: "/doctor",
-          Pharmacist: "/pharmacy",
-          LabTech: "/lab",
-          Cashier: "/cashier",
-          Patient: "/patient",
-          RchClinic: "/rchclinic",
+          Admin: '/admin',
+          Reception: '/reception',
+          Doctor: '/doctor',
+          Pharmacist: '/pharmacy',
+          LabTech: '/lab',
+          Cashier: '/cashier',
+          Patient: '/patient',
+          RchClinic: '/rchclinic',
         };
-  
+
         setTimeout(() => {
-          navigate(rolePaths[user.role] || "/dashboard");
+          navigate(rolePaths[user.role] || '/dashboard');
         }, 3000);
       }
     } catch (err) {
-      console.error("Login error:", err); // Log the error
-      toast.error(err.response?.data?.message || "Invalid username or password", {
-        position: "top-right",
+      console.error('Login error:', err); // Log the error
+      toast.error(err.response?.data?.message || 'Invalid username or password', {
+        position: 'top-right',
         autoClose: 3000,
-        theme: "colored",
+        theme: 'colored',
       });
     } finally {
       setLoading(false);
@@ -223,16 +103,14 @@ const Login = () => {
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Username Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Username
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
             <div className="relative">
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.username ? "border-red-500" : "border-gray-300"
+                  errors.username ? 'border-red-500' : 'border-gray-300'
                 } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors`}
                 placeholder="Enter your username"
               />
@@ -254,23 +132,19 @@ const Login = () => {
                 </span>
               )}
             </div>
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
-            )}
+            {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
           </div>
 
           {/* Password Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
             <div className="relative">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.password ? "border-red-500" : "border-gray-300"
+                  errors.password ? 'border-red-500' : 'border-gray-300'
                 } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors`}
                 placeholder="Enter your password"
               />
@@ -292,9 +166,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-            )}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
           {/* Remember Me and Forgot Password */}
@@ -306,18 +178,12 @@ const Login = () => {
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-700"
-              >
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                 Remember me
               </label>
             </div>
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
+              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Forgot password?
               </a>
             </div>
@@ -351,7 +217,7 @@ const Login = () => {
                 ></path>
               </svg>
             ) : (
-              "Sign In"
+              'Sign In'
             )}
           </button>
         </form>
@@ -359,11 +225,8 @@ const Login = () => {
         {/* Sign Up Link */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
+            Don't have an account?{' '}
+            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
               Sign up
             </a>
           </p>
