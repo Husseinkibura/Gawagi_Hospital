@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Search} from "react-bootstrap-icons";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,6 +26,7 @@ const calculateAge = (dob) => {
 const DoctorPatient = () => {
   const [patients, setPatients] = useState([]); // Initially empty, fetched from backend
   const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -290,32 +291,47 @@ useEffect(() => {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md mt-5">
-          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-          {/* Header with Search and Add Disease Button */}
-          <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
-            <h1 className="text-xl font-bold whitespace-nowrap">Patient List</h1>
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="relative w-full sm:w-48">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  />
-                  <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
-                    <Search className="w-4 h-4 text-gray-400" />
-                  </span>
-                </div>
-                <button
-                  onClick={toggleModal}
-                  className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm whitespace-nowrap"
-                >
-                  Register Patient
-                </button>
-              </div>
-            </div>
+    <div className="p-6 bg-gray-100 rounded-lg shadow-md mt-5">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      {/* Header with Search, Filter, and Add User Button */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-xl font-bold">Patient List</h1>
+        <div className="flex items-center space-x-4">
+          {/* Search Bar */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+              <Search className="w-5 h-5 text-gray-400" />
+            </span>
+          </div>
+
+          {/* Filter Dropdown */}
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="All">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Banned">Banned</option>
+          </select>
+
+          {/* Add User Button */}
+          {/* <button
+            onClick={toggleModal}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Register Patient
+          </button> */}
+        </div>
+      </div>
 
       {/* Table with Light Gray Background */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -442,7 +458,6 @@ useEffect(() => {
       Delete
     </span>
   </div> */}
-
 </td>
     </tr>
   ))}
